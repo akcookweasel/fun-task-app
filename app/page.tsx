@@ -30,7 +30,7 @@ export default function Home() {
     <main style={styles.container}>
       {showConfetti && <Confetti numberOfPieces={200} />}
 
-      <h1 style={styles.title}>✨ Fun Task Tracker ✨</h1>
+      <h1 style={{ ...styles.title, color: textColor }}>✨ Fun Task Tracker ✨</h1>
 
       <div style={styles.inputRow}>
         <input
@@ -53,7 +53,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.3 }}
-              style={styles.task}
+              style={{ ...styles.task, color: textColor }}
               onClick={() => completeTask(task.id)}
             >
               {task.text}
@@ -104,3 +104,13 @@ const styles: { [key: string]: React.CSSProperties } = {
     boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
   },
 };
+const [textColor, setTextColor] = useState<string>("#7c3aed");
+<div style={{ marginTop: 10 }}>
+  <label>Pick text color: </label>
+  <input
+    type="color"
+    value={textColor}
+    onChange={(e) => setTextColor(e.target.value)}
+    style={{ marginLeft: 10 }}
+  />
+</div>
