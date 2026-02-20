@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Confetti from "react-confetti";
+import dynamic from "next/dynamic";
+
+const Confetti = dynamic(() => import("react-confetti"), {
+  ssr: false,
+});
 
 type Task = {
   id: number;
