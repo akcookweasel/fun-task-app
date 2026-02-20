@@ -14,10 +14,6 @@ export default function Home() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [textColor, setTextColor] = useState("#000000");
 
-  return (
-    ...
-  );
-}
   function addTask() {
   if (!task) return;
   setTasks([...tasks, task]);
