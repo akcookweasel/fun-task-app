@@ -4,9 +4,9 @@ export const dynamic = "force-dynamic";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import dynamic from "next/dynamic";
+import dynamicImport from "next/dynamic";
 
-const Confetti = dynamic(() => import("react-confetti"), {
+const Confetti = dynamicImport(() => import("react-confetti"), {
   ssr: false,
 });
 
