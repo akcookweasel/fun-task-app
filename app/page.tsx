@@ -18,13 +18,13 @@ export default function Home() {
     ...
   );
 }
-  const addTask = () => {
-    if (!task) return;
-    setTasks([...tasks, task]);
-    setTask("");
-    setShowConfetti(true);
-    setTimeout(() => setShowConfetti(false), 2000);
-  };
+  function addTask() {
+  if (!task) return;
+  setTasks([...tasks, task]);
+  setTask("");
+  setShowConfetti(true);
+  setTimeout(() => setShowConfetti(false), 2000);
+}
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-500 to-blue-500 text-white p-8">
