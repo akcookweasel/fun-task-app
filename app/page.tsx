@@ -1,66 +1,58 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import dynamicImport from "next/dynamic";
+import dynamic from "next/dynamic";
 
-const Confetti = dynamicImport(() => import("react-confetti"), {
+const Confetti = dynamic(() => import("react-confetti"), {
   ssr: false,
 });
 
-type Task = {
-  id: number;
-  text: string;
-};
-
 export default function Home() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [input, setInput] = useState<string>("");
-  const [showConfetti, setShowConfetti] = useState<boolean>(false);
+  const [task, setTask] = useState("");
+  const [tasks, setTasks] = useState<string[]>([]);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const addTask = () => {
-    if (!input) return;
-    setTasks([...tasks, { id: Date.now(), text: input }]);
-    setInput("");
-  };
-
-  const completeTask = (id: number) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+    if (!task) return;
+    setTasks([...tasks, task]);
+    setTask("");
     setShowConfetti(true);
-    setTimeout(() => setShowConfetti(false), 1500);
+    setTimeout(() => setShowConfetti(false), 2000);
   };
 
   return (
-    <main style={styles.container}>
-      {showConfetti && <Confetti numberOfPieces={200} />}
+    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-500 to-blue-500 text-white p-8">
+      {showConfetti && <Confetti />}
 
-      <h1 style={{ ...styles.title, color: textColor }}>✨ Fun Task Tracker ✨</h1>
+      <h1 className="text-4xl font-bold mb-6">✨ Fun Task Tracker ✨</h1>
 
-      <div style={styles.inputRow}>
+      <div className="flex gap-2 mb-6">
         <input
-          style={styles.input}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Add a task..."
+          value={task}
+          onChange={(e) => setTask(e.target.value)}
+          className="px-4 py-2 rounded text-black"
+          placeholder="Enter a task"
         />
-        <button style={styles.button} onClick={addTask}>
+        <button
+          onClick={addTask}
+          className="bg-yellow-400 px-4 py-2 rounded font-bold"
+        >
           Add
         </button>
       </div>
 
-      <div style={{ marginTop: 20 }}>
+      <div className="space-y-2">
         <AnimatePresence>
-          {tasks.map((task) => (
+          {tasks.map((t, i) => (
             <motion.div
-              key={task.id}
+              key={i}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.3 }}
-              style={{ ...styles.task, color: textColor }}
-              onClick={() => completeTask(task.id)}
+              exit={{ opacity: 0 }}
+              className="bg-white text-black px-4 py-2 rounded shadow"
             >
-              {task.text}
+              ⭐ {t}
             </motion.div>
           ))}
         </AnimatePresence>
@@ -68,53 +60,3 @@ export default function Home() {
     </main>
   );
 }
-
-const styles: { [key: string]: React.CSSProperties } = {
-  container: {
-    minHeight: "100vh",
-    padding: "40px",
-    textAlign: "center",
-    background: "linear-gradient(to bottom right, #fce7f3, #e0f2fe)",
-    fontFamily: "sans-serif",
-  },
-  title: {
-    fontSize: "2.5rem",
-  },
-  inputRow: {
-    marginTop: 20,
-  },
-  input: {
-    padding: "10px",
-    borderRadius: "8px",
-    border: "1px solid #ccc",
-    width: "200px",
-  },
-  button: {
-    padding: "10px 15px",
-    marginLeft: 10,
-    borderRadius: "8px",
-    border: "none",
-    backgroundColor: "#a78bfa",
-    color: "white",
-    cursor: "pointer",
-  },
-  task: {
-    background: "white",
-    padding: "10px",
-    margin: "10px auto",
-    borderRadius: "10px",
-    width: "250px",
-    cursor: "pointer",
-    boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-  },
-};
-const [textColor, setTextColor] = useState<string>("#7c3aed");
-<div style={{ marginTop: 10 }}>
-  <label>Pick text color: </label>
-  <input
-    type="color"
-    value={textColor}
-    onChange={(e) => setTextColor(e.target.value)}
-    style={{ marginLeft: 10 }}
-  />
-</div>
